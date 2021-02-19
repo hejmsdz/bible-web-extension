@@ -10,6 +10,9 @@
     "scripts": [
       "background_script.js"
     ]
+  },
+  "omnibox": {
+    "keyword": "bib"
   }
 }
 
