@@ -1,15 +1,20 @@
+const formatBook = (book) => {
+  return book
+    .replace(' ', '')
+    .replace(/[a-z]/, (letter) => letter.toUpperCase());  
+};
+
 const parseBibleQuery = (query) => {
   const [book, chapter, verses] = (query.match(/((?:[1-3]\s?)?[A-Za-z]+) (\d+)(?:[,:]\s?(\d+(?:-\d+)?))?/) || []).slice(1);
-  const bookCapitalized = book[0].toUpperCase() + book.slice(1);
 
   return {
-    book: bookCapitalized,
+    book: formatBook(book),
     chapter,
     verses,
   };
 };
 
-const pismoSwietePl = ({ book, chapter, verses }) => {
+const paulistsUrl = ({ book, chapter, verses }) => {
   const chapterUrl = `https://pismoswiete.pl/app/#/tome/${book}/chapter/${chapter}/`;
   if (!verses) {
     return chapterUrl;
@@ -38,7 +43,7 @@ browser.omnibox.onInputEntered.addListener((query, disposition) => {
     return;
   }
 
-  const url = pismoSwietePl({ book, chapter, verses });
+  const url = paulistsUrl({ book, chapter, verses });
   openPage(disposition, url);
 });
 
