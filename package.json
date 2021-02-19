@@ -1,0 +1,16 @@
+{
+  "name": "bible-web-extension",
+  "version": "1.0.0",
+  "description": "Find Bible verses quickly from your browser's address bar",
+  "main": "index.js",
+  "scripts": {
+    "start": "web-ext run",
+    "build": "web-ext build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mikołaj Rozwadowski",
+  "license": "ISC",
+  "devDependencies": {
+    "web-ext": "^5.5.0"
+  }
+}
