@@ -151,6 +151,11 @@ const compareSuggestions = (a, b) => {
   return a.content.localeCompare(b.content);
 };
 
+const prepareSuggestions = (suggestions) => {
+  return suggestions.sort(compareSuggestions)
+    .map(({ content, description }) => ({ content, description }));
+};
+
 const openPage = (disposition, url) => {
   switch (disposition) {
     case 'currentTab':
@@ -168,7 +173,7 @@ const openPage = (disposition, url) => {
 browser.omnibox.setDefaultSuggestion({ description: 'Pismo Święte' });
 
 browser.omnibox.onInputChanged.addListener((query, suggest) => {
-  const suggestions = getSuggestions(query).sort(compareSuggestions);
+  const suggestions = prepareSuggestions(getSuggestions(query));
   suggest(suggestions);
 });
 
