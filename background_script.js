@@ -97,6 +97,34 @@ const paulistsUrl = ({ book, chapter, verses }) => {
   return `${chapterUrl}${verses}?isVerseQuery=true`;
 };
 
+const formatBookName = (book) => BOOKS[book];
+
+const formatBookChapter = (book, chapter) => {
+  return `${BOOKS[book]}, rozdział ${chapter}`;
+};
+
+const formatVerses = (verses) => verses.includes('-') ? `wersety ${verses}` : `werset ${verses}`;
+
+const getSuggestions = (query) => {
+  const { book, chapter, verses } = parseBibleQuery(query);
+
+  if (!chapter && !query.endsWith(' ')) {
+    return Object.entries(BOOKS)
+      .filter(([symbol, name]) => symbol.startsWith(book))
+      .map(([symbol, name]) => ({ content: `${symbol} `, description: name }));
+  }
+  if (!verses) {
+    if (chapter) {
+      return [{ content: `${book} ${chapter}, `, description: formatBookChapter(book, chapter) }];
+    }
+    return [{ content: `${book} `, description: formatBookName(book) }];
+  }
+  return [{
+    content: `${book} ${chapter}, ${verses}`,
+    description: `${formatBookChapter(book, chapter)}, ${formatVerses(verses)}`,
+  }];
+};
+
 const openPage = (disposition, url) => {
   switch (disposition) {
     case 'currentTab':
@@ -114,27 +142,9 @@ const openPage = (disposition, url) => {
 browser.omnibox.setDefaultSuggestion({ description: 'Pismo Święte' });
 
 browser.omnibox.onInputChanged.addListener((query, suggest) => {
-  const { book, chapter, verses } = parseBibleQuery(query);
-
-  let suggestions;
-  if (!chapter && !query.endsWith(' ')) {
-    suggestions = Object.entries(BOOKS)
-      .filter(([symbol, name]) => symbol.startsWith(book))
-      .map(([symbol, name]) => ({ content: `${symbol} `, description: name }));
-  } else if (!verses) {
-    if (chapter) {
-      suggestions = [{ content: `${book} ${chapter}, `, description: `${BOOKS[book]}, rozdział ${chapter}` }];
-    } else {
-      suggestions = [{ content: `${book} `, description: `${BOOKS[book]}` }];
-    }
-  } else {
-    if (verses.includes('-')) {
-      suggestions = [{ content: `${book} ${chapter}, ${verses}`, description: `${BOOKS[book]}, rozdział ${chapter}, wersety ${verses}` }];
-    } else {
-      suggestions = [{ content: `${book} ${chapter}, ${verses}`, description: `${BOOKS[book]}, rozdział ${chapter}, werset ${verses}` }];
-    }
-  }
-  suggest(suggestions.sort((a, b) => a.content.localeCompare(b.content)));
+  const suggestions = getSuggestions(query).sort((a, b) => a.content.localeCompare(b.content));
+  console.log(suggestions);
+  suggest(suggestions);
 });
 
 browser.omnibox.onInputEntered.addListener((query, disposition) => {
