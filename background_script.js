@@ -122,7 +122,11 @@ const getSuggestions = (query) => {
   if (!chapter && !query.endsWith(' ')) {
     return Object.entries(BOOKS)
       .filter(([symbol, name]) => symbol.startsWith(book) || name.toLowerCase().includes(queryLower))
-      .map(([symbol, name]) => ({ content: `${symbol} `, description: name }));
+      .map(([symbol, name]) => ({
+        content: `${symbol} `,
+        description: name,
+        isSymbolMatch: symbol.startsWith(book),
+      }));
   }
   if (!verses) {
     if (chapter) {
@@ -134,6 +138,13 @@ const getSuggestions = (query) => {
     content: `${book} ${chapter}, ${verses}`,
     description: `${formatBookChapter(book, chapter)}, ${formatVerses(verses)}`,
   }];
+};
+
+const compareSuggestions = (a, b) => {
+  if (a.isSymbolMatch !== b.isSymbolMatch) {
+    return (b.isSymbolMatch || 0) - (a.isSymbolMatch || 0);
+  }
+  return a.content.localeCompare(b.content);
 };
 
 const openPage = (disposition, url) => {
@@ -153,7 +164,7 @@ const openPage = (disposition, url) => {
 browser.omnibox.setDefaultSuggestion({ description: 'Pismo Święte' });
 
 browser.omnibox.onInputChanged.addListener((query, suggest) => {
-  const suggestions = getSuggestions(query).sort((a, b) => a.content.localeCompare(b.content));
+  const suggestions = getSuggestions(query).sort(compareSuggestions);
   suggest(suggestions);
 });
 
