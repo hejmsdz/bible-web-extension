@@ -104,11 +104,12 @@ const formatBookChapter = (book, chapter) => book === 'Ps' ? `Psalm ${chapter}` 
 const formatVerses = (verses) => verses.includes('-') ? `wersety ${verses}` : `werset ${verses}`;
 
 const getSuggestions = (query) => {
+  const queryLower = query.toLowerCase();
   const { book, chapter, verses } = parseBibleQuery(query);
 
   if (!chapter && !query.endsWith(' ')) {
     return Object.entries(BOOKS)
-      .filter(([symbol, name]) => symbol.startsWith(book))
+      .filter(([symbol, name]) => symbol.startsWith(book) || name.toLowerCase().includes(queryLower))
       .map(([symbol, name]) => ({ content: `${symbol} `, description: name }));
   }
   if (!verses) {
