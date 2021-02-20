@@ -88,7 +88,7 @@ const parseBibleQuery = (query) => {
   };
 };
 
-const paulistsUrl = ({ book, chapter, verses }) => {
+const paulistsUrl = (book, chapter, verses) => {
   const chapterUrl = `https://pismoswiete.pl/app/#/tome/${book}/chapter/${chapter}/`;
   if (!verses) {
     return chapterUrl;
@@ -148,11 +148,11 @@ browser.omnibox.onInputChanged.addListener((query, suggest) => {
 
 browser.omnibox.onInputEntered.addListener((query, disposition) => {
   const { book, chapter, verses } = parseBibleQuery(query);
-  if (!book && !chapter) {
+  if (!book) {
     return;
   }
 
-  const url = paulistsUrl({ book, chapter, verses });
+  const url = paulistsUrl(book, chapter || '1', verses);
   openPage(disposition, url);
 });
 
