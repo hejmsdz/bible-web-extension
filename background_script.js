@@ -99,9 +99,7 @@ const paulistsUrl = ({ book, chapter, verses }) => {
 
 const formatBookName = (book) => BOOKS[book];
 
-const formatBookChapter = (book, chapter) => {
-  return `${BOOKS[book]}, rozdział ${chapter}`;
-};
+const formatBookChapter = (book, chapter) => book === 'Ps' ? `Psalm ${chapter}` : `${BOOKS[book]}, rozdział ${chapter}`;
 
 const formatVerses = (verses) => verses.includes('-') ? `wersety ${verses}` : `werset ${verses}`;
 
