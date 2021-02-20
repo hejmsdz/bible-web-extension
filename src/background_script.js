@@ -73,6 +73,10 @@ const BOOKS = {
   'Ap': 'Apokalipsa św. Jana',
 };
 
+if (typeof browser === 'undefined' && typeof chrome !== 'undefined') {
+  browser = chrome;
+}
+
 const formatBook = (book) => {
   const [ordinal, initial, rest] = (book.toLowerCase().match(/(\d?)\s?([a-z])([a-z]*)/) || []).slice(1);
   return `${ordinal}${initial.toUpperCase()}${rest}`;
