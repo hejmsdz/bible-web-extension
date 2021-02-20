@@ -78,13 +78,25 @@ const formatBook = (book) => {
   return `${ordinal}${initial.toUpperCase()}${rest}`;
 };
 
+const ensureValidVerseRange = (verses) => {
+  if (!verses.includes('-')) {
+    return verses;
+  }
+
+  const [fromVerse, toVerse] = verses.split('-').map(Number);
+  if (toVerse > fromVerse) {
+    return verses;
+  }
+  return `${fromVerse}`;
+};
+
 const parseBibleQuery = (query) => {
   const [book, chapter, verses] = (query.match(/((?:[1-3]\s?)?[A-Za-z]+)(?:\s)?(\d+)?(?:[,:]\s?(\d+(?:-\d+)?))?/) || []).slice(1);
 
   return {
     book: book && formatBook(book),
     chapter,
-    verses,
+    verses: verses && ensureValidVerseRange(verses),
   };
 };
 
@@ -142,7 +154,6 @@ browser.omnibox.setDefaultSuggestion({ description: 'Pismo Święte' });
 
 browser.omnibox.onInputChanged.addListener((query, suggest) => {
   const suggestions = getSuggestions(query).sort((a, b) => a.content.localeCompare(b.content));
-  console.log(suggestions);
   suggest(suggestions);
 });
 
