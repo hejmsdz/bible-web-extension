@@ -74,9 +74,8 @@ const BOOKS = {
 };
 
 const formatBook = (book) => {
-  return book
-    .replace(' ', '')
-    .replace(/[a-z]/, (letter) => letter.toUpperCase());  
+  const [ordinal, initial, rest] = (book.toLowerCase().match(/(\d?)\s?([a-z])([a-z]*)/) || []).slice(1);
+  return `${ordinal}${initial.toUpperCase()}${rest}`;
 };
 
 const parseBibleQuery = (query) => {
