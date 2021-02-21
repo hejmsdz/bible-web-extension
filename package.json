@@ -4,8 +4,10 @@
   "description": "Quickly find Bible verses from your browser's address bar",
   "main": "index.js",
   "scripts": {
-    "start": "web-ext run --source-dir ./src/",
-    "build": "web-ext build --source-dir ./src/",
+    "start": "web-ext run -s src",
+    "start:firefox": "web-ext run -s src -t firefox-desktop",
+    "start:chrome": "web-ext run -s src -t chromium",
+    "build": "web-ext build -s src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mikołaj Rozwadowski",
