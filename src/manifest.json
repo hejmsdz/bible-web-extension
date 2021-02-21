@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Pismo Święte",
-  "description": "Szybko wyszukuj sigla biblijne prosto z paska adresu przeglądarki.",
+  "description": "Szybko wyszukuj sigla biblijne prosto z paska adresu. Słowo kluczowe: \"bib\".",
   "version": "1.0.0",
   "icons": {
     "64": "icons/icon.png"
