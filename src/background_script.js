@@ -78,7 +78,7 @@ if (typeof browser === 'undefined' && typeof chrome !== 'undefined') {
 }
 
 const formatBook = (book) => {
-  const [ordinal, initial, rest] = (book.toLowerCase().match(/(\d?)\s?([a-z])([a-z]*)/) || []).slice(1);
+  const [ordinal, initial, rest] = (book.toLowerCase().match(/(\d?)\s?([\p{L}])([\p{L}]*)/u) || []).slice(1);
   return `${ordinal}${initial.toUpperCase()}${rest}`;
 };
 
@@ -95,7 +95,7 @@ const ensureValidVerseRange = (verses) => {
 };
 
 const parseBibleQuery = (query) => {
-  const [book, chapter, verses] = (query.match(/((?:[1-3]\s?)?[A-Za-z]+)(?:\s)?(\d+)?(?:[,:]\s?(\d+(?:-\d+)?))?/) || []).slice(1);
+  const [book, chapter, verses] = (query.match(/((?:[1-3]\s?)?[\p{L}]+)(?:\s)?(\d+)?(?:[,:]\s?(\d+(?:-\d+)?))?/u) || []).slice(1);
 
   return {
     book: book && formatBook(book),
