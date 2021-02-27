@@ -1,6 +1,6 @@
 {
   "name": "bible-web-extension",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Quickly find Bible verses from your browser's address bar",
   "main": "index.js",
   "scripts": {
