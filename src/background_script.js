@@ -132,6 +132,9 @@ const getSuggestions = (query) => {
         isSymbolMatch: symbol.startsWith(book),
       }));
   }
+  if (!BOOKS[book]) {
+    return [];
+  }
   if (!verses) {
     if (chapter) {
       return [{ content: `${book} ${chapter}, `, description: formatBookChapter(book, chapter) }];
